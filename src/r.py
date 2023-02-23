@@ -103,7 +103,7 @@ def extract_road(image, kmeans_model):
         color_img[cluster_mask] = colors[k]
     return color_img
 
-file = "/home/hafeez/Desktop/cropped_images/10159.jpg"
+file = "/home/hafeez/Desktop/all_images/00007.jpg"
 img = cv2.imread(file)
 cv2.imshow("original Image", img)
 print(img.shape)
@@ -134,10 +134,14 @@ if lines is not None:
         x1, y1, x2, y2 = line[0]
         cv2.line(img, (x1, y1), (x2, y2), (0, 255, 0), 2)
 
+just = []
 # Draw the simplified edges on the image
 for coord in simplified_coords:
     pixel_color = rgb2[coord[1], coord[0]]
     cv2.circle(img, (coord[0], coord[1]), 1, (0, 0, 255), 2)
+    just.append([coord[0], coord[1]])
+print("The number of RDP points")
+print(len(just))
 
 # Show the image
 cv2.imshow("Image with lines", img)

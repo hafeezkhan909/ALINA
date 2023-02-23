@@ -64,19 +64,27 @@ def draw_contours(event, x, y, flags, param):
         cv2.line(img, (ix, iy), (x, y), (134, 111, 205), 2)
         contour_pts.append((x, y))
 
-def simplify_con(final_img, contour_points):
+def simplify_con(final_img, img2, contour_points):
 
-    # assume contour_points is the variable containing the OpenCV format contour points
-    point_list = []
-    for point in contour_points:
-        x, y = point[0]
-        point_list.append((x, y))
-        # print("This is point list")
-        # print(point_list)
-    point_list = np.array(point_list)
+    img = np.zeros_like(final_img[:, :, 0])
 
+    # Convert the image to grayscale
+    # gray = cv2.cvtColor(final_img, cv2.COLOR_BGR2GRAY)
 
+    # Create a binary image using a threshold
+    # ret, thresh = cv2.threshold(gray, 10, 255, cv2.THRESH_BINARY)
+    # Draw the approximated contour on the image
+    cv2.polylines(img, contour_points, True, (255, 255, 255), thickness=2)
 
+    # Find the contours
+    contours, hierarchy = cv2.findContours(img, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+
+    # Draw the contour
+    cv2.drawContours(img2, contours, -1, (255, 255, 255), 2)
+
+    # Show the image
+    cv2.imshow('Image with contour', img2)
+    cv2.waitKey(0)
 
 
 def active(img, init):
@@ -84,6 +92,8 @@ def active(img, init):
     img_display = np.copy(img)
     img2 = np.copy(img)
     img3 = np.copy(img)
+    img4 = np.copy(img)
+
     # Draw the initial contour on the image
     cv2.polylines(img_display, np.int32([init]), True, (0, 165, 255), thickness=2)
     # cv2.imshow("ddd", img_display)
@@ -121,7 +131,7 @@ def active(img, init):
     print(simplified_coords)
 
     # Find lines in the simplified edges using the Hough transform
-    lines = cv2.HoughLinesP(canny, 1, np.pi / 180, 50, minLineLength=30, maxLineGap=10)
+    lines = cv2.HoughLinesP(canny, 1, np.pi / 180, 4, minLineLength=2.5, maxLineGap=0.5)
 
     # Draw the lines on the image
     if lines is not None:
@@ -134,23 +144,42 @@ def active(img, init):
         pixel_color = img2[coord[1], coord[0]]
         cv2.circle(img, (coord[0], coord[1]), 1, (0, 0, 255), 2)
 
+
     # Show the image
     cv2.imshow("Image with lines", img)
     cv2.waitKey()
 
     # Create a new list to store the final contour points
     final_contour = []
+    just = []
 
     # Add the points from the Hough transform lines to the final contour
     if lines is not None:
         for line in lines:
             x1, y1, x2, y2 = line[0]
-            final_contour.append([x1, y1])
+            #Bresenham's line algorithm is being used to generate all the pixels on the line
+            dx = abs(x2 - x1)
+            dy = abs(y2 - y1)
+            sx = 1 if x1 < x2 else -1
+            sy = 1 if y1 < y2 else -1
+            err = dx - dy
+            while x1 != x2 or y1 != y2:
+                final_contour.append([x1, y1])
+                e2 = 2 * err
+                if e2 > -dy:
+                    err -= dy
+                    x1 += sx
+                if e2 < dx:
+                    err += dx
+                    y1 += sy
             final_contour.append([x2, y2])
 
     # Add the simplified points to the final contour
     for coord in simplified_coords:
         final_contour.append([coord[0], coord[1]])
+        just.append([coord[0], coord[1]])
+    print("The number of RDP points")
+    print(len(just))
 
     # Convert the final contour points to a numpy array
     final_contour = np.array(final_contour).reshape((-1, 1, 2))
@@ -162,9 +191,9 @@ def active(img, init):
     # Draw the approximated contour on the image
     cv2.polylines(img2, final_line, True, (0, 192, 255), thickness=2)
     # Show the image
-    cv2.imshow("Final Contour", img2)
-    cv2.waitKey()
-    simplify_con(img3, final_contour)
+    # cv2.imshow("Final Contour", img2)
+    # cv2.waitKey()
+    simplify_con(img3, img4, final_contour)
 
 # Load the image
 img = cv2.imread('/home/hafeez/Desktop/keypoint_image.jpg')
