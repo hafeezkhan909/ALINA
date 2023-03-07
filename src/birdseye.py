@@ -69,6 +69,7 @@ def auto_canny(image, sigma=0.33):
 img = cv2.imread('/home/hafeez/Desktop/36578.jpg')
 # 42371
 # 36578
+# 41858
 
 # Define the inverse trapezoidal region of interest (ROI) in the image
 # bottom_width = 540
@@ -113,5 +114,6 @@ unwarped = cv2.warpPerspective(canny, Minv, (img.shape[1], img.shape[0]))
 # Display the original and warped images side by side
 cv2.imshow('Original', img1)
 cv2.imshow('Warped', warped)
+cv2.imwrite('/home/hafeez/Desktop/warped.jpg', warped)
 cv2.imshow('Unwarped', unwarped)
 cv2.waitKey()
