@@ -3,7 +3,7 @@ import numpy as np
 from matplotlib import pyplot as plt
 from statistics import mean
 
-# Load image
+# Load the image
 img = cv2.imread('/home/hafeez/Desktop/features.jpg', cv2.IMREAD_GRAYSCALE)
 
 # Convert image to binary
