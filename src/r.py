@@ -68,6 +68,7 @@ def normalize_color_features(image):
     v = cv2.normalize(v, None, 0, 255, cv2.NORM_MINMAX)
     color_features = np.stack((h, s, v), axis=-1)
     cv2.imshow("CNormalized", color_features)
+    cv2.imwrite('/home/hafeez/Desktop/combined_features.jpg', color_features)
     return color_features
 
 def normalize_texture_features(image):
@@ -87,10 +88,10 @@ def gradient_normalization(image):
 
 def extract_road(image, kmeans_model):
     color_features = normalize_color_features(image)
-    texture_features = normalize_texture_features(image)
-    gradient_features = gradient_normalization(image)
-    multi_features = np.concatenate((color_features, texture_features, gradient_features), axis=-1)
-    multi_features = multi_features.reshape(-1, 9)
+    #texture_features = normalize_texture_features(image)
+    #gradient_features = gradient_normalization(image)
+    #multi_features = np.concatenate((color_features, texture_features, gradient_features), axis=-1)
+    multi_features = color_features.reshape(-1, 3)
     print(multi_features)
     labels = kmeans_model.predict(multi_features)
     labels = labels.reshape(*image.shape[:2])
@@ -103,7 +104,7 @@ def extract_road(image, kmeans_model):
         color_img[cluster_mask] = colors[k]
     return color_img
 
-file = "/home/hafeez/Desktop/all_images/00007.jpg"
+file = "/home/hafeez/Desktop/warped.jpg"
 img = cv2.imread(file)
 cv2.imshow("original Image", img)
 print(img.shape)
@@ -145,20 +146,20 @@ print(len(just))
 
 # Show the image
 cv2.imshow("Image with lines", img)
-
-y = lines[0][0][1]
-cropped_image = rgb2[y:, :]
+cropped_image = rgb2.copy()
+#y = lines[0][0][1]
+#cropped_image = rgb2[y:, :]
 cv2.imshow("cropped image", cropped_image)
 print(cropped_image.shape)
 
 # Train KMeans model
 kmeans = KMeans(n_clusters=9, init='k-means++', n_init=10, max_iter=5000, tol=0.1, verbose=0, random_state=None, copy_x=True)
 color_features = normalize_color_features(rgb3).reshape(-1, 3)
-texture_features = normalize_texture_features(rgb3).reshape(-1, 3)
-gradient_features = gradient_normalization(rgb3).reshape(-1, 3)
-multi_features = np.concatenate((color_features, texture_features, gradient_features), axis=-1)
-cv2.imshow('MMMMMMM', multi_features)
-kmeans.fit(multi_features)
+#texture_features = normalize_texture_features(rgb3).reshape(-1, 3)
+#gradient_features = gradient_normalization(rgb3).reshape(-1, 3)
+#multi_features = np.concatenate((color_features, texture_features, gradient_features), axis=-1)
+#cv2.imshow('MMMMMMM', multi_features)
+kmeans.fit(color_features)
 
 # Extract the road from the image
 road1 = extract_road(cropped_image, kmeans)
