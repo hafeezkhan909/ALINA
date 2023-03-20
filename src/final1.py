@@ -2,6 +2,7 @@ import cv2
 import numpy as np
 from final2 import normalize_color_features
 from final3 import calc_histogram
+from final4 import circular_threshold_pixel_discovery_and_traversal
 import time
 
 start_time = time.time()
@@ -100,28 +101,85 @@ img2 = cv2.imread('/home/hafeez/Desktop/features.jpg', cv2.IMREAD_GRAYSCALE)
 
 avg_pixel = calc_histogram(img2)
 
+img3 = cv2.imread('/home/hafeez/Desktop/features.jpg', 0)
+# Define the circular threshold
+threshold = 10
+
+
+# Define a visited array to keep track of the pixels that have already been processed
+visited = np.zeros_like(img3)
+
+
+# Define a list to store the coordinates of the white pixels that belong to the same line marking
+line_marking_pixels = []
+
+
+
+
+# Define a recursive function to find neighboring white pixels within the circular threshold
+# Circular Threshold Pixel Exploration
+# Circular Threshold Pixel Discovery and Traversal
+
+
+circular_threshold_pixel_discovery_and_traversal(img3, avg_pixel[0], avg_pixel[1], threshold, visited, line_marking_pixels)
+
+
+# Call the flood_fill function with the starting point coordinates
+#circular_threshold_pixel_discovery_and_traversal(avg_pixel[0], avg_pixel[1])
+
+
+# Print the list of white pixels that belong to the same line marking
+print(line_marking_pixels)
+
+
+# Define the size of the black image to create
+height, width = img3.shape[:2]
+
+
+# Create a new black image
+black_img = np.zeros((height, width), dtype=np.uint8)
+
+
+# Plot the white pixels on the black image
+for x, y in line_marking_pixels:
+   cv2.circle(black_img, (x, y), 1, 255, -1)
+
+
+# Display the black image with the white pixels plotted
+cv2.imshow('Line Marking', black_img)
+#cv2.waitKey()
+
+
 # Compute the inverse perspective transform matrix
 Minv = cv2.getPerspectiveTransform(dst, roi)
 
+
 # Apply the inverse perspective transformation to the warped image
-unwarped = cv2.warpPerspective(img2, Minv, (img.shape[1], img.shape[0]))
+unwarped = cv2.warpPerspective(black_img, Minv, (img.shape[1], img.shape[0]))
 #cv2.imshow('Unwarped', unwarped)
+
 
 # Find the white pixels in img1
 line_pixels_only = np.where(unwarped == 255)
+
 
 # Mark the white pixels in img2 with red
 final_img[line_pixels_only] = (0, 0, 255)  # set pixel color to red
 print(line_pixels_only)
 
+
 # Display the marked image
 cv2.imshow('Marked Image', final_img)
 
+
 end_time = time.time()
+
 
 elapsed_time = end_time - start_time
 
+
 print(f"Elapsed time: {elapsed_time: .2f} seconds")
+
 
 cv2.waitKey()
 cv2.destroyAllWindows()
