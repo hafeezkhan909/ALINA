@@ -14,7 +14,7 @@ def calc_histogram(img):
     plt.plot(projection)
     plt.xlabel('X-coordinate')
     plt.ylabel('Number of white pixels')
-    plt.show()
+    #plt.show()
 
     # Find peak value of projection
     peak_value = np.max(projection)

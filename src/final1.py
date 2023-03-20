@@ -7,7 +7,7 @@ import time
 
 start_time = time.time()
 
-img = cv2.imread('/home/hafeez/Desktop/42371.jpg')
+img = cv2.imread('/home/hafeez/Desktop/05640.jpg')
 final_img = img.copy()
 # 42371
 # 06449
@@ -82,7 +82,7 @@ masked_img = cv2.bitwise_and(mask, mask, mask=masked)
 
 # Display masked image
 cv2.imshow('Masked Image', masked_img)
-
+print(masked_img.shape)
 cv2.imwrite('/home/hafeez/Desktop/features.jpg', masked_img)
 #cv2.waitKey()
 # Apply the mask to the original image to extract yellow pixels

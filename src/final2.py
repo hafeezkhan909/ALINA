@@ -8,6 +8,6 @@ def normalize_color_features(image):
     s = cv2.normalize(s, None, 0, 255, cv2.NORM_MINMAX)
     v = cv2.normalize(v, None, 0, 255, cv2.NORM_MINMAX)
     color_features = np.stack((h, s, v), axis=-1)
-    cv2.imshow("CNormalized", color_features)
+    #cv2.imshow("CNormalized", color_features)
     cv2.imwrite('/home/hafeez/Desktop/combined_features.jpg', color_features)
     return color_features
