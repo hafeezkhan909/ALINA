@@ -7,8 +7,8 @@ import time
 import os
 
 start_time = time.time()
-filename = '08001.jpg'
-img = cv2.imread('/home/hafeez/Desktop/08001.jpg')
+filename = '05640.jpg'
+img = cv2.imread('/home/hafeez/Desktop/05640.jpg')
 output_directory = '/home/hafeez/Desktop/i/'
 final_img = img.copy()
 # 42371
@@ -114,7 +114,7 @@ avg_pixel = calc_histogram(img2)
 
 img3 = cv2.imread('/home/hafeez/Desktop/features.jpg', 0)
 # Define the circular threshold
-threshold = 10
+threshold = 20
 
 
 # Define a visited array to keep track of the pixels that have already been processed
@@ -131,7 +131,7 @@ line_marking_pixels = []
 # Circular Threshold Pixel Exploration
 # Circular Threshold Pixel Discovery and Traversal
 
-
+#visited = set()
 circular_threshold_pixel_discovery_and_traversal(img3, avg_pixel[0], avg_pixel[1], threshold, visited, line_marking_pixels)
 
 

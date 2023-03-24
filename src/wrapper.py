@@ -98,7 +98,7 @@ def active(img):
     # Apply the inverse perspective transformation to the warped image
     unwarped = cv2.warpPerspective(black_img, Minv, (img.shape[1], img.shape[0]))
 
-    line_pixels_only = np.where(unwarped == 255)
+    line_pixels_only = np.where(unwarped > 0)
     x_coords, y_coords = line_pixels_only[1], line_pixels_only[0]
 
     # Stack the x and y coordinates horizontally
