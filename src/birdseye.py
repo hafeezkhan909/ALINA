@@ -66,8 +66,10 @@ def auto_canny(image, sigma=0.33):
     edge = cv2.Canny(image, lower, higher)
     return edge
 
-img = cv2.imread('/home/hafeez/Desktop/36578.jpg')
+img = cv2.imread('/home/hafeez/Desktop/06449.jpg')
 # 42371
+# 06449
+# 06666
 # 36578
 # 41858
 
@@ -103,6 +105,7 @@ texture = normalize_texture_features(warped)
 img_gray = cv2.cvtColor(texture, cv2.COLOR_BGR2GRAY)
 canny = cv2.Canny(img_gray, 30, 160)
 cv2.imshow('Canny', canny)
+
 # Compute the inverse perspective transform matrix
 Minv = cv2.getPerspectiveTransform(dst, roi)
 
@@ -116,4 +119,5 @@ cv2.imshow('Original', img1)
 cv2.imshow('Warped', warped)
 cv2.imwrite('/home/hafeez/Desktop/warped.jpg', warped)
 cv2.imshow('Unwarped', unwarped)
+print(unwarped.shape)
 cv2.waitKey()

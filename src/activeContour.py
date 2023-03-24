@@ -1,10 +1,6 @@
 import cv2
 import numpy as np
-from scipy.interpolate import splprep, splev
-from skimage.segmentation import active_contour
-from skimage.filters import gaussian
-from scipy.interpolate import interp1d
-
+import os
 def recursive_algo(points, threshold):
 
     dmax = 0
@@ -80,12 +76,12 @@ def simplify_con(final_img, img2, contour_points):
     contours, hierarchy = cv2.findContours(img, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
 
     # Draw the contour
-    cv2.drawContours(img2, contours, -1, (255, 255, 255), 2)
+    cv2.drawContours(img2, contours, -1, (63, 0, 255), 2)
 
     # Show the image
     cv2.imshow('Image with contour', img2)
+    # cv2.imwrite('/home/hafeez/Desktop/Dataset/image_with_contours.jpg', img)
     cv2.waitKey(0)
-
 
 def active(img, init):
     # Create a copy of the image for display purposes
@@ -105,18 +101,18 @@ def active(img, init):
 
     # Apply Canny edge detection inside the contour region
     img_gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
-    cv2.imshow('Gray', img_gray)
+    # cv2.imshow('Gray', img_gray)
 
     img_gray_masked = cv2.bitwise_and(img_gray, img_gray, mask=mask)
-    cv2.imshow('Gray masked', img_gray_masked)
+    # cv2.imshow('Gray masked', img_gray_masked)
 
     img_gray_masked = cv2.GaussianBlur(img_gray_masked, (5, 5), 0)
     canny = cv2.Canny(img_gray_masked, 30, 160)
-    cv2.imshow('Canny on the mask', canny)
+    # cv2.imshow('Canny on the mask', canny)
 
     # Draw the initial contour on the canny image now
     cv2.polylines(canny, np.int32([init]), True, (0, 0, 0), thickness=2)
-    cv2.imshow('pure', canny)
+    # cv2.imshow('pure', canny)
 
 
     rows, cols = np.where(canny == 255)
@@ -157,7 +153,7 @@ def active(img, init):
     if lines is not None:
         for line in lines:
             x1, y1, x2, y2 = line[0]
-            #Bresenham's line algorithm is being used to generate all the pixels on the line
+            # Bresenham's line algorithm is being used to generate all the pixels on the line
             dx = abs(x2 - x1)
             dy = abs(y2 - y1)
             sx = 1 if x1 < x2 else -1
@@ -196,7 +192,7 @@ def active(img, init):
     simplify_con(img3, img4, final_contour)
 
 # Load the image
-img = cv2.imread('/home/hafeez/Desktop/keypoint_image.jpg')
+img = cv2.imread('/home/hafeez/Desktop/P2/05051.jpg')
 
 # Create a window and bind the mouse events to the callback function
 cv2.namedWindow('image')
@@ -210,10 +206,10 @@ while True:
     cv2.imshow('image', img)
     key = cv2.waitKey(1) & 0xFF
     if key == ord('s'):  # Save the image
-        cv2.imwrite('/home/hafeez/Desktop/image_with_contours.jpg', img)
+        # cv2.imwrite('/home/hafeez/Desktop/image_with_contours.jpg', img)
         init_contour = np.array(contour_pts, np.int32)
         print(init_contour)
-        img2 = cv2.imread('/home/hafeez/Desktop/ccc.jpg')
+        img2 = cv2.imread('/home/hafeez/Desktop/P2/05051.jpg')
         active(img2, init_contour)
     elif key == 27:  # Press 'Esc' to exit
         break

@@ -98,9 +98,18 @@ def active(img):
     # Apply the inverse perspective transformation to the warped image
     unwarped = cv2.warpPerspective(black_img, Minv, (img.shape[1], img.shape[0]))
 
-    # Find the white pixels in img1
     line_pixels_only = np.where(unwarped == 255)
+    x_coords, y_coords = line_pixels_only[1], line_pixels_only[0]
 
+    # Stack the x and y coordinates horizontally
+    coords = np.column_stack((x_coords, y_coords))
+
+    # Save the coordinates to a text file
+    np.savetxt('/home/hafeez/Desktop/white_pixels.txt', coords, fmt='%6d')
+    image_basename = os.path.splitext(filename)[0]
+    text_filename = image_basename + '.txt'
+    print(text_filename)
+    np.savetxt('/home/hafeez/Desktop/TEXTFILES/' + text_filename, coords, fmt='%6d')
     # Mark the white pixels in img2 with red
     final_img[line_pixels_only] = (0, 0, 255)  # set pixel color to red
     #print(line_pixels_only)

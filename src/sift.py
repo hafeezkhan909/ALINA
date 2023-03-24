@@ -103,7 +103,7 @@ def extract_road(image, kmeans_model):
         color_img[cluster_mask] = colors[k]
     return color_img
 
-file = "/home/hafeez/Desktop/cropped_images/10159.jpg"
+file = "/home/hafeez/Desktop/ccc.jpg"
 img = cv2.imread(file)
 cv2.imshow("original Image", img)
 print(img.shape)

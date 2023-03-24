@@ -5,12 +5,12 @@ import time
 
 start_time = time.time()
 
-input_directory = '/home/hafeez/Desktop/'
+input_directory = '/home/hafeez/Desktop/K2'
 
 # Get list of image filenames in ascending order
 image_filenames = sorted([f for f in os.listdir(input_directory) if f.endswith('.jpg')])
 
-output_directory = '/home/hafeez/Desktop/'
+output_directory = '/home/hafeez/Desktop/K2_IMAGES/'
 def recursive_algo(points, threshold):
 
     dmax = 0
@@ -93,7 +93,7 @@ def active(img, init, filename):
         print(coords)
 
         # Simplify the edges using the Ramer-Douglas-Peucker algorithm
-        threshold = 0.7 # adjust as needed
+        threshold = 0.9 # adjust as needed
         simplified_coords = np.array(recursive_algo(coords, threshold))
         print(simplified_coords)
 
@@ -142,7 +142,7 @@ def active(img, init, filename):
         image_basename = os.path.splitext(filename)[0]
         text_filename = image_basename + '.txt'
         print(text_filename)
-        np.savetxt('/home/hafeez/Desktop/datasetText_L2/' + text_filename, final_contour, fmt='%6d')
+        np.savetxt('/home/hafeez/Desktop/K2_TEXTFILES/' + text_filename, final_contour, fmt='%6d')
         # Show the image
 
         cv2.imshow("Image with lines", img)
@@ -233,7 +233,7 @@ def active(img, init, filename):
 
     image_basename = os.path.splitext(filename)[0]
     text_filename = image_basename + '.txt'
-    np.savetxt('/home/hafeez/Desktop/' + text_filename, final_contour, fmt='%6d')
+    np.savetxt('/home/hafeez/Desktop/K2_TEXTFILES/' + text_filename, final_contour, fmt='%6d')
 
     cv2.imwrite(os.path.join(output_directory, filename), img)
     # cv2.waitKey()
@@ -241,7 +241,7 @@ def active(img, init, filename):
 active.has_been_called = False
 def func_one():
     # Load the contour points from file
-    contour_pts = np.loadtxt('/home/hafeez/Desktop/contour_pts.txt', dtype=np.int64)
+    contour_pts = np.loadtxt('/home/hafeez/Desktop/contour_ptsK2.txt', dtype=np.int64)
 
     # Iterate through all the images in the directory
 
@@ -278,7 +278,7 @@ def draw_contours(event, x, y, flags, param):
 
 
 # Load the initial image
-img = cv2.imread('/home/hafeez/Desktop/')
+img = cv2.imread('/home/hafeez/Desktop/K2/07535.jpg')
 
 # Create a window and bind the mouse events to the callback function
 cv2.namedWindow('image')
@@ -292,9 +292,9 @@ while True:
     cv2.imshow('image', img)
     key = cv2.waitKey(1) & 0xFF
     if key == ord('s'):  # Save the image and contour points
-        cv2.imwrite('/home/hafeez/Desktop/image_with_contours.jpg', img)
+        cv2.imwrite('/home/hafeez/Desktop/image_with_contoursK2.jpg', img)
         init_contour = np.array(contour_pts, np.int64)
-        np.savetxt('/home/hafeez/Desktop/contour_pts.txt', init_contour, fmt='%6d')
+        np.savetxt('/home/hafeez/Desktop/contour_ptsK2.txt', init_contour, fmt='%6d')
         func_one()
     elif key == 27:  # Press 'Esc' to exit
         break
