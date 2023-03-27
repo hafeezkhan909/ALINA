@@ -30,7 +30,7 @@ for i, row in enumerate(peak_area):
         # x = peak_index
         y = i
         white_pixels.append(y)
-
+print(len(white_pixels))
 list_avg = int(mean(white_pixels))
 avg_pixel = [peak_index, list_avg]
 

@@ -2,13 +2,13 @@ import cv2
 import numpy as np
 from final2 import normalize_color_features
 from final3 import calc_histogram
-from final4 import circular_threshold_pixel_discovery_and_traversal
+from final5 import circular_threshold_pixel_discovery_and_traversal
 import time
 import os
 
 start_time = time.time()
 filename = '05640.jpg'
-img = cv2.imread('/home/hafeez/Desktop/05640.jpg')
+img = cv2.imread('/home/hafeez/Desktop/02598.jpg')
 output_directory = '/home/hafeez/Desktop/i/'
 final_img = img.copy()
 # 42371
@@ -110,11 +110,11 @@ from statistics import mean
 # Load the image
 img2 = cv2.imread('/home/hafeez/Desktop/features.jpg', cv2.IMREAD_GRAYSCALE)
 
-avg_pixel = calc_histogram(img2)
+avg_pixel, peak_value = calc_histogram(img2)
 
 img3 = cv2.imread('/home/hafeez/Desktop/features.jpg', 0)
 # Define the circular threshold
-threshold = 20
+threshold = 15
 
 
 # Define a visited array to keep track of the pixels that have already been processed
@@ -131,7 +131,7 @@ line_marking_pixels = []
 # Circular Threshold Pixel Exploration
 # Circular Threshold Pixel Discovery and Traversal
 
-#visited = set()
+visited = set()
 circular_threshold_pixel_discovery_and_traversal(img3, avg_pixel[0], avg_pixel[1], threshold, visited, line_marking_pixels)
 
 
