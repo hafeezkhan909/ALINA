@@ -6,7 +6,7 @@ from final5 import circular_threshold_pixel_discovery_and_traversal
 from datetime import datetime
 import os
 
-input_directory = '/home/hafeez/Desktop/5_vid'
+input_directory = '/home/hafeez/Desktop/5_vid_copy'
 
 # Get list of image filenames in ascending order
 image_filenames = sorted([f for f in os.listdir(input_directory) if f.endswith('.jpg')])
@@ -65,12 +65,16 @@ def active(img):
     img2 = masked_img.copy()
     img3 = masked_img.copy()
 
-    # Apply the mask to the original image to extract yellow pixels
+    '''
+    Apply the mask to the original image to extract yellow pixels
     yellow_pixels = cv2.bitwise_and(warped, warped, mask=mask)
-
+    '''
     avg_pixel, peak_value = calc_histogram(img2)
+
     print(peak_value)
-    if(peak_value > 75):
+
+    if (peak_value > 100):
+
         # Define the circular threshold
         threshold = 20
 
@@ -80,7 +84,7 @@ def active(img):
 
         # Define a list to store the coordinates of the white pixels that belong to the same line marking
         line_marking_pixels = []
-
+        img3[avg_pixel[1]][avg_pixel[0]] = 255
         visited = set()
         circular_threshold_pixel_discovery_and_traversal(img3, avg_pixel[0], avg_pixel[1], threshold, visited, line_marking_pixels)
 
@@ -147,7 +151,7 @@ def time_calc():
 
 
 # Open the file for writing
-with open('/home/hafeez/Desktop/5_vid_time_calc/processing_times2.txt', 'w') as f:
+with open('/home/hafeez/Desktop/5_vid_time_calc/processing_times_left.txt', 'w') as f:
     for filename in image_filenames:
         if filename.endswith(".jpg"):
             start_time = datetime.now().strftime("%H:%M:%S")

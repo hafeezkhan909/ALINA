@@ -29,14 +29,16 @@ def calc_histogram(img):
             # x = peak_index
             y = i
             white_pixels.append(y)
-    if(len(white_pixels) > 75):
+    if(len(white_pixels) > 100):
         list_avg = int(mean(white_pixels))
         avg_pixel = [peak_index, list_avg]
         return avg_pixel, peak_value
+
         print(avg_pixel)
         print('Peak value:', peak_value)
         print('Peak index:', peak_index)
         print('White pixel coordinates:', white_pixels)
+
     else:
         no_pixel = []
         return no_pixel, peak_value
