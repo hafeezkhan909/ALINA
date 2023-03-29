@@ -7,8 +7,8 @@ import time
 import os
 
 start_time = time.time()
-filename = '05592.jpg'
-img = cv2.imread('/home/hafeez/Desktop/5_vid_copy/05592.jpg')
+filename = '08021.jpg'
+img = cv2.imread('/home/hafeez/Desktop/vidd_copy_2/07659.jpg')
 output_directory = '/home/hafeez/Desktop/i/'
 final_img = img.copy()
 # 42371
@@ -68,7 +68,7 @@ cv2.imwrite(os.path.join(output_directory, 'img1.jpg'), img1)
 
 # C
 # Define the lower and upper ranges of yellow hue values
-lower_yellow = np.array([0, 70, 150]) # lower hue value of yellow
+lower_yellow = np.array([0, 70, 170]) # lower hue value of yellow
 upper_yellow = np.array([255, 255, 255]) # upper hue value of yellow
 
 # T + C + G

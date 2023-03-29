@@ -6,13 +6,13 @@ from final5 import circular_threshold_pixel_discovery_and_traversal
 from datetime import datetime
 import os
 
-input_directory = '/home/hafeez/Desktop/5_vid_copy'
+input_directory = '/home/hafeez/Desktop/vidd_copy_2'
 
 # Get list of image filenames in ascending order
 image_filenames = sorted([f for f in os.listdir(input_directory) if f.endswith('.jpg')])
 
-output_directory1 = '/home/hafeez/Desktop/5_vid_annotations/'
-output_directory2 = '/home/hafeez/Desktop/5_vid_textfiles/'
+output_directory1 = '/home/hafeez/Desktop/vidd_annotations/'
+output_directory2 = '/home/hafeez/Desktop/vidd_textfiles/'
 
 def active(img):
 
@@ -49,7 +49,7 @@ def active(img):
     img1 = cv2.imread('/home/hafeez/Desktop/combined_features.jpg')
 
     # Define the lower and upper ranges of yellow hue values
-    lower_yellow = np.array([0, 70, 150]) # lower hue value of yellow
+    lower_yellow = np.array([0, 70, 170]) # lower hue value of yellow
     upper_yellow = np.array([255, 255, 255]) # upper hue value of yellow
 
     # Create a binary mask
@@ -73,10 +73,10 @@ def active(img):
 
     print(peak_value)
 
-    if (peak_value > 100):
+    if (peak_value > 75):
 
         # Define the circular threshold
-        threshold = 20
+        threshold = 30
 
         # Define a visited array to keep track of the pixels that have already been processed
         visited = np.zeros_like(img3)
@@ -151,7 +151,7 @@ def time_calc():
 
 
 # Open the file for writing
-with open('/home/hafeez/Desktop/5_vid_time_calc/processing_times_left.txt', 'w') as f:
+with open('/home/hafeez/Desktop/5_vid_time_calc/processing_times_vidd_7.txt', 'w') as f:
     for filename in image_filenames:
         if filename.endswith(".jpg"):
             start_time = datetime.now().strftime("%H:%M:%S")
