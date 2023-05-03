@@ -108,7 +108,7 @@ def active(img, init):
 
     img_gray_masked = cv2.GaussianBlur(img_gray_masked, (5, 5), 0)
     canny = cv2.Canny(img_gray_masked, 30, 160)
-    # cv2.imshow('Canny on the mask', canny)
+    cv2.imshow('Canny on the mask', canny)
 
     # Draw the initial contour on the canny image now
     cv2.polylines(canny, np.int32([init]), True, (0, 0, 0), thickness=2)
@@ -192,7 +192,7 @@ def active(img, init):
     simplify_con(img3, img4, final_contour)
 
 # Load the image
-img = cv2.imread('/home/hafeez/Desktop/P2/05051.jpg')
+img = cv2.imread('C:\\Users\\assist-lab\\Desktop\\00155.jpg')
 
 # Create a window and bind the mouse events to the callback function
 cv2.namedWindow('image')
@@ -209,7 +209,8 @@ while True:
         # cv2.imwrite('/home/hafeez/Desktop/image_with_contours.jpg', img)
         init_contour = np.array(contour_pts, np.int32)
         print(init_contour)
-        img2 = cv2.imread('/home/hafeez/Desktop/P2/05051.jpg')
+        print('this is the length ', len(init_contour))
+        img2 = cv2.imread('C:\\Users\\assist-lab\\Desktop\\00155.jpg')
         active(img2, init_contour)
     elif key == 27:  # Press 'Esc' to exit
         break
