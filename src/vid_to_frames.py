@@ -13,6 +13,7 @@ def rotate_frames(input_loc, output_loc):
             input_loc: Input frame directory.
             output_loc: Output directory to save the frames.
         Returns:
+            None
         """
     count=0
     time_start = time.time()
