@@ -13,7 +13,6 @@ def rotate_frames(input_loc, output_loc):
             input_loc: Input frame directory.
             output_loc: Output directory to save the frames.
         Returns:
-            None
         """
     count=0
     time_start = time.time()
@@ -78,7 +77,7 @@ def video_to_frames(input_loc, output_loc):
 
 
 if __name__ == "__main__":
-    rotate_list = [2]
+    rotate_list = [3]
     for i in rotate_list:
         input_loc = 'C:\\Users\\assist-lab\\Desktop\\input\\'+ str(i) + '.mp4'
         output_loc = 'C:\\Users\\assist-lab\\Desktop\\output\\' + str(i) + '\\'
