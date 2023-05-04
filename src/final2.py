@@ -10,5 +10,5 @@ def normalize_color_features(image):
     color_features = np.stack((h, s, v), axis=-1)
     #cv2.imshow("CNormalized", color_features)
     #cv2.waitKey()
-    cv2.imwrite('/home/hafeez/Desktop/combined_features.jpg', color_features)
+    cv2.imwrite(r"C:\Users\assist-lab\Desktop\combined_features.jpg", color_features)
     return color_features

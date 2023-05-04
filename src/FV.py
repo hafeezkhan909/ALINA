@@ -8,12 +8,12 @@ def calculate_iou(coords1, coords2):
     inter = set1 & set2
     total = inter | set2
     union = set1 | set2
-    iou = len(intersection) / len(total)
+    iou = (len(intersection) / len(total))*100
     return iou
 
 # Directories containing text files
 canny_dir = r'C:\Users\assist-lab\Desktop\FV\canny_textfiles'
-alina_dir = r'C:\Users\assist-lab\Desktop\FV\ALINA_textfiles1'
+alina_dir = r'C:\Users\assist-lab\Desktop\FV\ALINA_textfiles2'
 
 # Loop through each text file in the directory
 iou_values = []
@@ -55,4 +55,4 @@ for filename in os.listdir(canny_dir):
 
 # Print the average IoU over all text files
 avg_iou = np.mean(iou_values)
-print("Average IoU:", avg_iou)
+print("Average IoU:", avg_iou, '%')

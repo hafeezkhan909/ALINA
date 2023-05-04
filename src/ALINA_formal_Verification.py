@@ -10,7 +10,7 @@ def auto_canny(image, sigma=0.33):
     edge = cv2.Canny(image, lower, higher)
     return edge
 
-img = cv2.imread('/home/hafeez/Desktop/vidd/40000.jpg')
+img = cv2.imread(r'C:\Users\assist-lab\Desktop\FV\ALINA_images1\01063.jpg')
 '''
 test images
 02796
@@ -37,7 +37,7 @@ edges = auto_canny(img_blur)
 #         cv2.line(img, (x1, y1), (x2, y2), (0, 255, 0), 2)
 
 # Load x, y coordinates from text file
-with open('/home/hafeez/Desktop/vidd_textfiles/40000.txt') as f:
+with open(r'C:\Users\assist-lab\Desktop\FV\ALINA_textfiles1\01063.txt') as f:
     lines = f.readlines()
 
 # Convert coordinates to numpy array

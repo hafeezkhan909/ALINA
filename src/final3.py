@@ -15,7 +15,7 @@ def calc_histogram(img):
     plt.xlabel('X-coordinate')
     plt.ylabel('Number of white pixels')
     #plt.show()
-    plt.savefig('/home/hafeez/Desktop/histogram.jpg')
+    plt.savefig(r"C:\Users\assist-lab\Desktop\histogram.jpg")
 
     # Find peak value of projection
     peak_value = np.max(projection)
@@ -29,7 +29,7 @@ def calc_histogram(img):
             # x = peak_index
             y = i
             white_pixels.append(y)
-    if(len(white_pixels) > 75):
+    if(len(white_pixels) > 200):
         list_avg = int(mean(white_pixels))
         avg_pixel = [peak_index, list_avg]
         return avg_pixel, peak_value

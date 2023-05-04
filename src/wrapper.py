@@ -6,21 +6,22 @@ from final5 import circular_threshold_pixel_discovery_and_traversal
 from datetime import datetime
 import os
 
-input_directory = '/home/hafeez/Desktop/vidd_copy_2'
+input_directory = r"C:\Users\assist-lab\Desktop\bad"
+
 
 # Get list of image filenames in ascending order
 image_filenames = sorted([f for f in os.listdir(input_directory) if f.endswith('.jpg')])
 
-output_directory1 = '/home/hafeez/Desktop/vidd_annotations/'
-output_directory2 = '/home/hafeez/Desktop/vidd_textfiles/'
+output_directory1 = r"C:\Users\assist-lab\Desktop\vidd_annotations"
+output_directory2 = "C:\\Users\\assist-lab\\Desktop\\textfile\\"
 
 def active(img):
 
     final_img = img.copy()
 
-    roi1 = np.array([[(540, 770), (490, 700),
-                     (1210, 700), (1150, 770)]],
-                   dtype=np.int32)
+    roi1 = np.array([[(540, 730), (490, 600),
+                   (1060, 600), (1010, 730)]],
+                       dtype=np.int32)
 
     img1 = img.copy()
     no_lines_img = img.copy()
@@ -28,14 +29,14 @@ def active(img):
     cv2.polylines(img1, roi1, True, (0, 0, 255), thickness=2)
 
     # Define the region of interest as a trapezoid
-    roi = np.array([[(540, 770), (490, 700),
-                    (1210, 700), (1150, 770)]],
-                  dtype=np.float32)
+    roi = np.array([[(540, 730), (490, 600),
+                   (1060, 600), (1010, 730)]],
+                      dtype=np.float32)
 
     # Define the desired rectangular shape
     dst = np.array([[(50, 800), (50, 100),
-                   (1200, 100), (1200, 800)]],
-                 dtype=np.float32)
+                     (1200, 100), (1200, 800)]],
+                      dtype=np.float32)
 
     # Compute the perspective transform matrix
     M = cv2.getPerspectiveTransform(roi, dst)
@@ -46,18 +47,23 @@ def active(img):
     color_features = normalize_color_features(warped).reshape(-1, 3)
 
     # Load your image
-    img1 = cv2.imread('/home/hafeez/Desktop/combined_features.jpg')
+    img1 = cv2.imread(r"C:\Users\assist-lab\Desktop\combined_features.jpg")
 
     # Define the lower and upper ranges of yellow hue values
     lower_yellow = np.array([0, 70, 170]) # lower hue value of yellow
     upper_yellow = np.array([255, 255, 255]) # upper hue value of yellow
+
+    # Define the lower and upper ranges of yellow hue values
+    # lower_yellow = np.array([0, 150, 0])  # lower hue value of yellow
+    # upper_yellow = np.array([255, 255, 255])  # upper hue value of yellow
 
     # Create a binary mask
     mask = cv2.inRange(img1, lower_yellow, upper_yellow)
 
     # Create mask
     masked = np.ones(img1.shape[:2], dtype=np.uint8)
-    masked[:, 0:300] = 0
+    #masked[:, 0:300] = 0
+    #masked[:, 1100:1920] = 0
 
     # Apply mask to image
     masked_img = cv2.bitwise_and(mask, mask, mask=masked)
@@ -73,7 +79,7 @@ def active(img):
 
     print(peak_value)
 
-    if (peak_value > 75):
+    if (peak_value > 200):
 
         # Define the circular threshold
         threshold = 30
@@ -114,6 +120,7 @@ def active(img):
         text_filename = image_basename + '.txt'
         print(text_filename)
         np.savetxt(output_directory2 + text_filename, coords, fmt='%6d')
+        print('saved !!!')
         # Mark the white pixels in img2 with red
         final_img[line_pixels_only] = (0, 0, 255)  # set pixel color to red
         #print(line_pixels_only)
@@ -151,7 +158,7 @@ def time_calc():
 
 
 # Open the file for writing
-with open('/home/hafeez/Desktop/5_vid_time_calc/processing_times_vidd_7.txt', 'w') as f:
+with open(r"C:\Users\assist-lab\Desktop\vid_time_calc\processing_times_vidd_23.txt", 'w') as f:
     for filename in image_filenames:
         if filename.endswith(".jpg"):
             start_time = datetime.now().strftime("%H:%M:%S")
