@@ -1,36 +1,37 @@
 import cv2
 import numpy as np
-from final2 import normalize_color_features
-from final3 import calc_histogram
-from final5 import circular_threshold_pixel_discovery_and_traversal
+from ColorFeatureNormalization import normalize_color_features
+from HistogramAnalysis import calc_histogram
+from CIRCLEDAT import circular_threshold_pixel_discovery_and_traversal
 from datetime import datetime
 import os
 
+# Set the input directory, where the images reside
 input_directory = r"C:\Users\assist-lab\Desktop\bad"
-
 
 # Get list of image filenames in ascending order
 image_filenames = sorted([f for f in os.listdir(input_directory) if f.endswith('.jpg')])
 
-output_directory1 = r"C:\Users\assist-lab\Desktop\vidd_annotations"
-output_directory2 = "C:\\Users\\assist-lab\\Desktop\\textfile\\"
+# Set the output directory, where the images and their corresponding text files should be saved
+output_directory1 = r"C:\Users\assist-lab\Desktop\vidd_annotations_4"
+output_directory2 = "C:\\Users\\assist-lab\\Desktop\\vidd_textfile_4\\"
 
-def active(img):
+
+def detect_and_extract_taxiway_line_pixels(img):
 
     final_img = img.copy()
-
-    roi1 = np.array([[(540, 730), (490, 600),
-                   (1060, 600), (1010, 730)]],
-                       dtype=np.int32)
-
     img1 = img.copy()
     no_lines_img = img.copy()
+
+    roi1 = np.array([[(640, 780), (590, 700),
+                      (1160, 700), (1110, 780)]],
+                       dtype=np.int32)
 
     cv2.polylines(img1, roi1, True, (0, 0, 255), thickness=2)
 
     # Define the region of interest as a trapezoid
-    roi = np.array([[(540, 730), (490, 600),
-                   (1060, 600), (1010, 730)]],
+    roi = np.array([[(640, 780), (590, 700),
+                     (1160, 700), (1110, 780)]],
                       dtype=np.float32)
 
     # Define the desired rectangular shape
@@ -53,17 +54,12 @@ def active(img):
     lower_yellow = np.array([0, 70, 170]) # lower hue value of yellow
     upper_yellow = np.array([255, 255, 255]) # upper hue value of yellow
 
-    # Define the lower and upper ranges of yellow hue values
-    # lower_yellow = np.array([0, 150, 0])  # lower hue value of yellow
-    # upper_yellow = np.array([255, 255, 255])  # upper hue value of yellow
-
     # Create a binary mask
     mask = cv2.inRange(img1, lower_yellow, upper_yellow)
 
-    # Create mask
+    # Create mask for masking any particular region in the image
     masked = np.ones(img1.shape[:2], dtype=np.uint8)
-    #masked[:, 0:300] = 0
-    #masked[:, 1100:1920] = 0
+    masked[:, 0:300] = 0
 
     # Apply mask to image
     masked_img = cv2.bitwise_and(mask, mask, mask=masked)
@@ -75,20 +71,22 @@ def active(img):
     Apply the mask to the original image to extract yellow pixels
     yellow_pixels = cv2.bitwise_and(warped, warped, mask=mask)
     '''
+
     avg_pixel, peak_value = calc_histogram(img2)
 
     print(peak_value)
 
-    if (peak_value > 200):
+    if (peak_value > 75):
 
         # Define the circular threshold
-        threshold = 30
+        threshold = 15
 
         # Define a visited array to keep track of the pixels that have already been processed
         visited = np.zeros_like(img3)
 
 
         # Define a list to store the coordinates of the white pixels that belong to the same line marking
+
         line_marking_pixels = []
         img3[avg_pixel[1]][avg_pixel[0]] = 255
         visited = set()
@@ -121,15 +119,11 @@ def active(img):
         print(text_filename)
         np.savetxt(output_directory2 + text_filename, coords, fmt='%6d')
         print('saved !!!')
+
         # Mark the white pixels in img2 with red
         final_img[line_pixels_only] = (0, 0, 255)  # set pixel color to red
-        #print(line_pixels_only)
-
-        # Display the marked image
-        #cv2.imshow('Marked Image', final_img)
         print(filename)
         cv2.imwrite(os.path.join(output_directory1, filename), final_img)
-
         end_time, start_datetime, end_datetime, elapsed_time = time_calc()
         time_data = f"{filename}: Start time - {start_time}, End time - {end_time}, Elapsed time - {elapsed_time} seconds\n"
         f.write(time_data)
@@ -158,12 +152,12 @@ def time_calc():
 
 
 # Open the file for writing
-with open(r"C:\Users\assist-lab\Desktop\vid_time_calc\processing_times_vidd_23.txt", 'w') as f:
+with open(r"C:\Users\assist-lab\Desktop\vid_time_calc\processing_times_vidd_40.txt", 'w') as f:
     for filename in image_filenames:
         if filename.endswith(".jpg"):
             start_time = datetime.now().strftime("%H:%M:%S")
             # Load the image
             img = cv2.imread(os.path.join(input_directory, filename))
-            active(img)
+            detect_and_extract_taxiway_line_pixels(img)
 
 cv2.destroyAllWindows()
