@@ -81,3 +81,4 @@ print("Average Recall:", avg_recall, '%')
 # Print the average precision over all text files
 avg_precision = np.mean(precision_values)
 print("Average Precision:", avg_precision, '%')
+
