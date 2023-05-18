@@ -3,28 +3,39 @@ import numpy as np
 from ColorFeatureNormalization import normalize_color_features
 from HistogramAnalysis import calc_histogram
 from CIRCLEDAT_Optimized import circular_threshold_pixel_discovery_and_traversal
+from interactiveUser import select_roi
 import time
 import os
 
 start_time = time.time()
-filename = '00001.jpg'
-img = cv2.imread("C:\\Users\\assist-lab\\Desktop\\output\\3\\00001.jpg")
+filename = '32045.jpg'
+image_path = "C:\\Users\\assist-lab\\Desktop\\bad2\\06107.jpg"
+img = cv2.imread(image_path)
 output_directory = "C:\\Users\\assist-lab\\Desktop\\i\\"
-
 final_img = img.copy()
 img1 = img.copy()
 
-roi1 = np.array([[(640, 780), (590, 700),
-                   (1160, 700), (1110, 780)]],
-               dtype=np.int32)
+roi_points = select_roi(image_path)
+print('these are the roi points: ')
+print(roi_points)
+roi_points[0][0][0]
+roi1 = np.array([[(roi_points[0][0][0], roi_points[0][0][1]), (roi_points[0][1][0], roi_points[0][1][1]),
+                  (roi_points[0][3][0], roi_points[0][1][1]), (roi_points[0][5][0], roi_points[0][0][1])]],
+                   dtype=np.int32)
+
+
+# roi1 = np.array([[(790, 800), (740, 720),
+#                   (1150, 720), (1100, 800)]],
+#                dtype=np.int32)
 
 cv2.polylines(img1, roi1, True, (0, 0, 255), thickness=2)
-cv2.imshow('Polyline', img1)
+cv2.imwrite(os.path.join(output_directory, 'polylines.jpg'), img1)
+cv2.imshow('Polyline1234', img1)
 cv2.waitKey()
 
 # Define the region of interest as a trapezoid
-roi = np.array([[(640, 780), (590, 700),
-                   (1160, 700), (1110, 780)]],
+roi = np.array([[(roi_points[0][0][0], roi_points[0][0][1]), (roi_points[0][1][0], roi_points[0][1][1]),
+                  (roi_points[0][3][0], roi_points[0][1][1]), (roi_points[0][5][0], roi_points[0][0][1])]],
                  dtype=np.float32)
 
 # Define the desired rectangular shape
@@ -48,7 +59,7 @@ cv2.imshow('original', img1)
 cv2.imwrite(os.path.join(output_directory, 'img1.jpg'), img1)
 
 # Define the lower and upper ranges of yellow hue values
-lower_yellow = np.array([0, 60, 170]) # lower hue value of yellow
+lower_yellow = np.array([0, 70, 160]) # lower hue value of yellow
 upper_yellow = np.array([255, 255, 255]) # upper hue value of yellow
 
 # Create a binary mask
@@ -83,7 +94,7 @@ avg_pixel, peak_value = calc_histogram(img2)
 
 img3 = cv2.imread(r"C:\Users\assist-lab\Desktop\features.jpg", 0)
 # Define the circular threshold
-threshold = 40
+threshold = 15
 
 # Define a visited array to keep track of the pixels that have already been processed
 visited = np.zeros_like(img3)
