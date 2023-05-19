@@ -20,7 +20,7 @@ def calc_histogram(img):
     # Find peak value of projection
     peak_value = np.max(projection)
     peak_index = np.argmax(projection)
-    print('Peak value:', peak_value)
+    #print('Peak value:', peak_value)
     # Get x, y coordinates of white pixels in peak area
     peak_area = binary_img[:, peak_index]
     white_pixels = []
